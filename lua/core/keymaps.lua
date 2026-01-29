@@ -39,7 +39,36 @@ keymap.set("n", "e", "<cmd>Neotree toggle<cr>", { desc = "Abrir/Cerrar explorado
 keymap.set("n", "w", ":w<CR>", { desc = "Guardar archivo" })
 keymap.set("n", "q", ":bdelete<CR>", { desc = "Cerrar buffer actual" })
 keymap.set("n", "z", "u", { desc = "Deshacer cambios" })
+keymap.set("n", "Z", "<C-r>", { desc = "Rehacer cambios" })
 keymap.set("n", "Q", ":qa!<CR>", { desc = "Cerrar todo y salir de Neovim" })
+
+-- ============================================================================
+-- 3.1. CORTAR, COPIAR Y PEGAR
+-- ============================================================================
+-- x abre el menú para cortar (funciona como d - delete)
+keymap.set("n", "x", "d", { desc = "Menú de cortar (x + movimiento, o xx para línea)" })
+keymap.set("n", "xx", "dd", { desc = "Cortar línea completa" })
+keymap.set("v", "x", "d", { desc = "Cortar selección visual" })
+
+-- c abre el menú para copiar (funciona como y - yank)
+keymap.set("n", "c", "y", { desc = "Menú de copiar (c + movimiento, o cc para línea)" })
+keymap.set("n", "cc", "yy", { desc = "Copiar línea completa" })
+keymap.set("v", "c", "y", { desc = "Copiar selección visual" })
+
+-- v para pegar después del cursor, V para pegar antes
+keymap.set("n", "v", "p", { desc = "Pegar después del cursor" })
+keymap.set("n", "V", "P", { desc = "Pegar antes del cursor" })
+keymap.set("v", "v", "p", { desc = "Pegar en selección visual" })
+keymap.set("v", "V", "P", { desc = "Pegar antes en selección visual" })
+
+-- ============================================================================
+-- 3.2. IDENTACIÓN
+-- ============================================================================
+-- > para identar a la derecha, < para identar a la izquierda
+keymap.set("n", ">", ">>", { desc = "Identar línea a la derecha" })
+keymap.set("n", "<", "<<", { desc = "Identar línea a la izquierda" })
+keymap.set("v", ">", ">gv", { desc = "Identar selección a la derecha" })
+keymap.set("v", "<", "<gv", { desc = "Identar selección a la izquierda" })
 
 -- ============================================================================
 -- 4. MOVIMIENTO ENTRE VENTANAS
@@ -84,11 +113,34 @@ keymap.set("v", "{", "$", { desc = "Ir al final de la línea (visual)" })
 keymap.set("n", "K", "v^", { desc = "Seleccionar hasta el inicio de línea" })
 keymap.set("n", "Ñ", "v$", { desc = "Seleccionar hasta el final de línea" })
 
+-- Ctrl+s para entrar al modo visual
+keymap.set("n", "<C-s>", "v", { desc = "Entrar al modo visual" })
+
+-- En modo visual, Ctrl+s selecciona la palabra completa (sin importar posición)
+keymap.set("v", "<C-s>", function()
+    -- Si ya estamos en modo visual, seleccionar palabra completa
+    -- Primero ir al inicio de la palabra
+    vim.cmd("normal! bw")
+    -- Luego seleccionar la palabra completa
+    vim.cmd("normal! aw")
+end, { desc = "Seleccionar palabra completa" })
+
+-- Ctrl+d para seleccionar la palabra donde está el cursor (viw)
+keymap.set("n", "<C-d>", "viw", { desc = "Seleccionar palabra completa bajo cursor" })
+
 -- ============================================================================
 -- 8. SCROLL Y CENTRADO
 -- ============================================================================
-keymap.set("n", "<M-l>", "<C-d>zz", { desc = "Scroll down y centrar" })
-keymap.set("n", "<M-o>", "<C-u>zz", { desc = "Scroll up y centrar" })
+-- Scroll 1/4 de página (en lugar de 1/2)
+keymap.set("n", "<M-l>", function()
+    local lines = math.floor(vim.api.nvim_win_get_height(0) / 4)
+    vim.cmd("normal! " .. lines .. "jzz")
+end, { desc = "Scroll down 1/4 de página y centrar" })
+
+keymap.set("n", "<M-o>", function()
+    local lines = math.floor(vim.api.nvim_win_get_height(0) / 4)
+    vim.cmd("normal! " .. lines .. "kzz")
+end, { desc = "Scroll up 1/4 de página y centrar" })
 
 -- ============================================================================
 -- 9. TERMINAL (ToggleTerm)
