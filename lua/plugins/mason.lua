@@ -26,6 +26,10 @@ return {
         "json-lsp",
         "yaml-language-server",
         "lemminx",
+        "typescript-language-server",
+        "eslint-lsp",
+        "prettier",
+        "vtsls",
       }
       
       for _, tool in ipairs(ensure_installed) do

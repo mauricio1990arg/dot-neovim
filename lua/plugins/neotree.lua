@@ -9,13 +9,31 @@ return {
     },
     config = function()
       require("neo-tree").setup({
+        close_if_last_window = true,
         window = {
+          width = 30,
           mappings = {
-            ["o"] = "none", -- Desactiva el mapeo interno que causa error
-            ["l"] = "none", -- Desactiva el mapeo interno que causa error
-            ["k"] = "close_node", -- Usamos tu tecla izquierda para cerrar carpetas
-            ["ñ"] = "open",       -- Usamos tu tecla derecha para abrir archivos/carpetas
+            ["o"] = "none",
+            ["l"] = "none",
+            ["k"] = "close_node",
+            ["ñ"] = "open",
             ["<space>"] = "none",
+            ["<cr>"] = "open_with_window_picker",
+          },
+        },
+        filesystem = {
+          follow_current_file = {
+            enabled = true,
+            leave_dirs_open = false,
+          },
+          hijack_netrw_behavior = "open_current",
+        },
+        event_handlers = {
+          {
+            event = "file_opened",
+            handler = function()
+              require("neo-tree.command").execute({ action = "close" })
+            end
           },
         },
       })

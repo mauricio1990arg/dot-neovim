@@ -1,7 +1,7 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    lazy = false,  -- NO DEBE SER LAZY LOADED
+    lazy = false,
     build = ':TSUpdate',
   }
 }
