@@ -4,6 +4,7 @@ require("core.keymaps")
 require("core.lazy")
 require("core.java-helpers")
 require("core.java-check")
+require("core.runners")
 require("config.dbee-visual").setup() -- Configuración visual para nvim-dbee
 vim.g.skip_ts_context_commentstring_module = true
 vim.opt.termguicolors = true

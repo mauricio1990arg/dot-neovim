@@ -165,8 +165,16 @@ keymap.set('n', '<C-.>', vim.diagnostic.open_float, { desc = "Ver error en líne
 -- ============================================================================
 -- 16. JAVA - SPRING BOOT
 -- ============================================================================
-keymap.set('n', '<M-s>', ':SpringBootRun<CR>', { desc = "Spring Boot: Ejecutar aplicación" })
-keymap.set('n', '<M-S>', ':SpringBootStop<CR>', { desc = "Spring Boot: Detener aplicación" })
+-- Requiere lua/core/runners.lua
+keymap.set('n', '<M-s>', '<cmd>SpringBootRun<CR>', { desc = "Spring Boot: Ejecutar aplicación" })
+keymap.set('n', '<M-S>', '<cmd>SpringBootStop<CR>', { desc = "Spring Boot: Detener aplicación" })
+
+-- ============================================================================
+-- 16.1 REACT ROUTER 7
+-- ============================================================================
+-- Requiere lua/core/runners.lua
+keymap.set('n', '<M-r>', '<cmd>ReactRouterRun<CR>', { desc = "React Router 7: Ejecutar (bun dev --host)" })
+keymap.set('n', '<M-R>', '<cmd>ReactRouterStop<CR>', { desc = "React Router 7: Detener aplicación" })
 
 -- ============================================================================
 -- 17. DEBUGGER (DAP) - Todos los lenguajes
