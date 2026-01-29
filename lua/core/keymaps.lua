@@ -184,10 +184,8 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 -- ============================================================================
 -- 18. BASE DE DATOS (nvim-dbee)
 -- ============================================================================
--- <leader>db  → Abrir/Cerrar nvim-dbee
--- <leader>do  → Abrir nvim-dbee
--- <leader>dc  → Cerrar nvim-dbee
--- <leader>dr  → Ejecutar query
+-- <leader>D   → Abrir/Cerrar nvim-dbee (Shift+D para evitar conflicto con debugger)
+-- <leader>dq  → Ejecutar query
 --
 -- Dentro del Drawer (barra lateral):
 -- o/l         → Navegar arriba/abajo (respeta tu layout)
@@ -200,7 +198,6 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 --
 -- Dentro del Editor de Queries:
 -- <leader>rr  → Ejecutar archivo completo
--- <leader>rs  → Ejecutar statement actual (modo normal)
 -- <leader>rs  → Ejecutar selección (modo visual)
 
 -- ============================================================================
@@ -210,7 +207,8 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 -- <leader>x*  → Trouble (errores y diagnósticos)
 -- <leader>j*  → Java refactoring
 -- <leader>t*  → Testing (Java)
--- <leader>d*  → Debugger (DAP) y Database (nvim-dbee)
+-- <leader>d*  → Debugger (DAP)
+-- <leader>D   → Database (nvim-dbee)
 -- <leader>ca  → Code actions (LSP)
 -- <leader>rn  → Rename (LSP)
 -- <leader>r*  → Run queries (nvim-dbee)
