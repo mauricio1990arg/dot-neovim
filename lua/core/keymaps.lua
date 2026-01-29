@@ -45,13 +45,15 @@ keymap.set("n", "Q", ":qa!<CR>", { desc = "Cerrar todo y salir de Neovim" })
 -- 4. MOVIMIENTO ENTRE VENTANAS
 -- ============================================================================
 keymap.set("n", "<C-k>", "<C-w>h", { desc = "Ir a ventana izquierda" })
+keymap.set("n", "<C-l>", "<C-w>j", { desc = "Ir a ventana abajo" })
 keymap.set("n", "<C-ñ>", "<C-w>l", { desc = "Ir a ventana derecha" })
+keymap.set("n", "<C-o>", "<C-w>k", { desc = "Ir a ventana arriba" })
 
 -- ============================================================================
 -- 5. NAVEGACIÓN ENTRE BUFFERS (Archivos Abiertos)
 -- ============================================================================
-keymap.set("n", "<M-l>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Buffer anterior" })
-keymap.set("n", "<M-o>", "<cmd>BufferLineCycleNext<cr>", { desc = "Buffer siguiente" })
+keymap.set("n", "<M-k>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Buffer anterior" })
+keymap.set("n", "<M-ñ>", "<cmd>BufferLineCycleNext<cr>", { desc = "Buffer siguiente" })
 keymap.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Cerrar buffer actual" })
 
 -- Saltos directos a buffers específicos
@@ -85,8 +87,8 @@ keymap.set("n", "Ñ", "v$", { desc = "Seleccionar hasta el final de línea" })
 -- ============================================================================
 -- 8. SCROLL Y CENTRADO
 -- ============================================================================
-keymap.set("n", "<C-l>", "<C-d>zz", { desc = "Scroll down y centrar" })
-keymap.set("n", "<C-o>", "<C-u>zz", { desc = "Scroll up y centrar" })
+keymap.set("n", "<M-l>", "<C-d>zz", { desc = "Scroll down y centrar" })
+keymap.set("n", "<M-o>", "<C-u>zz", { desc = "Scroll up y centrar" })
 
 -- ============================================================================
 -- 9. TERMINAL (ToggleTerm)
@@ -232,11 +234,13 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>ca  → Code actions (LSP)
 -- <leader>rn  → Rename (LSP)
 -- <leader>r*  → Run queries (nvim-dbee)
--- <leader>1-9 → Saltar a buffer específico
--- <M-s/S>     → Spring Boot run/stop
--- <M-l/o>     → Navegar entre buffers
--- <F5-F12>    → Debugger controls
--- <leader>z+/- → Zoom de fuente (Kitty)
--- <C-w>m/M     → Maximizar/Restaurar ventana
--- Ctrl+Shift+= / Ctrl+Shift+- → Zoom nativo de Kitty (fuera de Neovim)
+-- <leader>1-9   → Saltar a buffer específico
+-- <M-s/S>       → Spring Boot run/stop
+-- <M-k/ñ>       → Navegar entre buffers (anterior/siguiente)
+-- <M-o/l>       → Scroll up/down (desplazamiento en documento)
+-- <C-k/l/o/ñ>   → Navegar entre ventanas (izq/abajo/arriba/der)
+-- <F5-F12>      → Debugger controls
+-- <leader>z+/-  → Zoom de fuente (Kitty)
+-- <C-w>m/M      → Maximizar/Restaurar ventana
+-- Ctrl+Shift+=/- → Zoom nativo de Kitty (fuera de Neovim)
 -- gd/gD/gi/gr → LSP navigation
