@@ -115,9 +115,11 @@ keymap.set('n', '<leader>fi', '<cmd>Telescope lsp_implementations<cr>', { desc =
 -- 11. TROUBLE (Lista de Errores y Diagnósticos)
 -- ============================================================================
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Trouble: Todos los errores" })
-keymap.set("n", "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Trouble: Errores del archivo" })
+keymap.set("n", "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+    { desc = "Trouble: Errores del archivo" })
 keymap.set("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Trouble: Símbolos" })
-keymap.set("n", "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { desc = "Trouble: Info LSP" })
+keymap.set("n", "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+    { desc = "Trouble: Info LSP" })
 
 -- ============================================================================
 -- 12. LSP - NAVEGACIÓN DE CÓDIGO (Todos los lenguajes)
@@ -135,7 +137,7 @@ keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "LSP: Mostrar documentación (h
 keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP: Renombrar símbolo" })
 keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "LSP: Acciones de código" })
 keymap.set('n', '<leader>f', function()
-  vim.lsp.buf.format({ async = true })
+    vim.lsp.buf.format({ async = true })
 end, { desc = "LSP: Formatear código" })
 
 -- ============================================================================
@@ -173,11 +175,33 @@ keymap.set("n", "<F11>", function() require('dap').step_into() end, { desc = "De
 keymap.set("n", "<F12>", function() require('dap').step_out() end, { desc = "Debug: Paso fuera (Step Out)" })
 keymap.set("n", "<leader>db", function() require('dap').toggle_breakpoint() end, { desc = "Debug: Toggle breakpoint" })
 keymap.set("n", "<leader>dB", function()
-  require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))
+    require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end, { desc = "Debug: Breakpoint condicional" })
 keymap.set("n", "<leader>dr", function() require('dap').repl.open() end, { desc = "Debug: Abrir REPL" })
 keymap.set("n", "<leader>dl", function() require('dap').run_last() end, { desc = "Debug: Ejecutar último" })
 keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc = "Debug: Toggle UI" })
+
+-- ============================================================================
+-- 18. BASE DE DATOS (nvim-dbee)
+-- ============================================================================
+-- <leader>db  → Abrir/Cerrar nvim-dbee
+-- <leader>do  → Abrir nvim-dbee
+-- <leader>dc  → Cerrar nvim-dbee
+-- <leader>dr  → Ejecutar query
+--
+-- Dentro del Drawer (barra lateral):
+-- o/l         → Navegar arriba/abajo (respeta tu layout)
+-- k/ñ         → Navegar izquierda/derecha
+-- ñ           → Expandir/colapsar nodos
+-- <CR>        → Abrir/activar conexión o scratchpad
+-- r           → Refrescar
+-- cw          → Renombrar/editar
+-- dd          → Eliminar
+--
+-- Dentro del Editor de Queries:
+-- <leader>rr  → Ejecutar archivo completo
+-- <leader>rs  → Ejecutar statement actual (modo normal)
+-- <leader>rs  → Ejecutar selección (modo visual)
 
 -- ============================================================================
 -- RESUMEN DE PREFIJOS
@@ -186,9 +210,10 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 -- <leader>x*  → Trouble (errores y diagnósticos)
 -- <leader>j*  → Java refactoring
 -- <leader>t*  → Testing (Java)
--- <leader>d*  → Debugger (DAP)
+-- <leader>d*  → Debugger (DAP) y Database (nvim-dbee)
 -- <leader>ca  → Code actions (LSP)
 -- <leader>rn  → Rename (LSP)
+-- <leader>r*  → Run queries (nvim-dbee)
 -- <leader>1-9 → Saltar a buffer específico
 -- <M-s/S>     → Spring Boot run/stop
 -- <M-l/o>     → Navegar entre buffers
