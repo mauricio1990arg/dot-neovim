@@ -1,0 +1,50 @@
+-- ~/.config/nvim/lua/plugins/java-simple.lua
+return {
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
+    config = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "java",
+        once = false,  -- Permitir que se ejecute cada vez
+        callback = function(ev)
+          -- Solo iniciar si no hay un cliente LSP ya activo en este buffer
+          if #vim.lsp.get_clients({ bufnr = ev.buf }) > 0 then
+            return
+          end
+          
+          local jdtls = require("jdtls")
+          local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+          local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
+          local lombok_path = vim.fn.expand("~/.local/share/nvim/jdtls/lombok.jar")
+          
+          local root_dir = vim.fs.dirname(
+            vim.fs.find({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }, { upward = true })[1]
+          ) or vim.fn.getcwd()
+          
+          local config = {
+            cmd = { "jdtls", "-data", workspace_dir },
+            root_dir = root_dir,
+            settings = {
+              java = {
+                configuration = { updateBuildConfiguration = "automatic" }
+              }
+            },
+            on_attach = function(client, bufnr)
+              -- Deshabilitar reportes de progreso que causan el error
+              client.server_capabilities.window = client.server_capabilities.window or {}
+              client.server_capabilities.window.workDoneProgress = false
+              
+              vim.notify("✓ Java LSP activo", vim.log.levels.INFO)
+            end,
+          }
+          
+          -- Iniciar con manejo de errores silencioso
+          vim.schedule(function()
+            pcall(jdtls.start_or_attach, config)
+          end)
+        end,
+      })
+    end,
+  },
+}

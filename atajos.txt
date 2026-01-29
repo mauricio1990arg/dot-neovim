@@ -10,4 +10,3 @@ deshacer cambios z
 cambio entre explorador y archivo abierto ctrl + k y ctrl + ñ
 cambio entre archivos abiertos ctrl + o y ctrl + l
 terminal ctrl + t
-
