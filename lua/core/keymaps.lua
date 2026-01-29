@@ -145,13 +145,20 @@ end, { desc = "Scroll up 1/4 de página y centrar" })
 -- ============================================================================
 -- 9. TERMINAL (ToggleTerm)
 -- ============================================================================
--- Ctrl+\ para abrir/cerrar terminal (configurado en toggleterm.lua)
+-- Leader + t para abrir/cerrar terminal
+keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>', { desc = "Toggle terminal" })
+
 -- En modo terminal:
 keymap.set('t', '<esc>', [[<C-\><C-n>]], { desc = "Salir del modo insert en terminal" })
 keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], { desc = "Terminal: ir a ventana izquierda" })
 keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], { desc = "Terminal: ir a ventana abajo" })
 keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], { desc = "Terminal: ir a ventana arriba" })
 keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], { desc = "Terminal: ir a ventana derecha" })
+
+-- Leader + a para toggle del panel de opencode (abrir/cerrar)
+keymap.set('n', '<leader>a', function()
+    require("core.opencode-panel").toggle()
+end, { desc = "Toggle panel de opencode (abrir/cerrar)" })
 
 -- ============================================================================
 -- 10. TELESCOPE (Búsqueda de Archivos y Texto)
@@ -215,18 +222,17 @@ keymap.set('n', '<C-.>', vim.diagnostic.open_float, { desc = "Ver error en líne
 -- <leader>tm → Ejecutar test del método actual
 
 -- ============================================================================
--- 16. JAVA - SPRING BOOT
+-- 16. ARRANQUE DE APLICACIONES (Menú <leader>s)
 -- ============================================================================
 -- Requiere lua/core/runners.lua
-keymap.set('n', '<M-s>', '<cmd>SpringBootRun<CR>', { desc = "Spring Boot: Ejecutar aplicación" })
-keymap.set('n', '<M-S>', '<cmd>SpringBootStop<CR>', { desc = "Spring Boot: Detener aplicación" })
 
--- ============================================================================
--- 16.1 REACT ROUTER 7
--- ============================================================================
--- Requiere lua/core/runners.lua
-keymap.set('n', '<M-r>', '<cmd>ReactRouterRun<CR>', { desc = "React Router 7: Ejecutar (bun dev --host)" })
-keymap.set('n', '<M-R>', '<cmd>ReactRouterStop<CR>', { desc = "React Router 7: Detener aplicación" })
+-- Spring Boot
+keymap.set('n', '<leader>ss', '<cmd>SpringBootRun<CR>', { desc = "Spring Boot: Ejecutar" })
+keymap.set('n', '<leader>sS', '<cmd>SpringBootStop<CR>', { desc = "Spring Boot: Detener" })
+
+-- React Router 7
+keymap.set('n', '<leader>sr', '<cmd>ReactRouterRun<CR>', { desc = "React Router 7: Ejecutar" })
+keymap.set('n', '<leader>sR', '<cmd>ReactRouterStop<CR>', { desc = "React Router 7: Detener" })
 
 -- ============================================================================
 -- 17. DEBUGGER (DAP) - Todos los lenguajes
