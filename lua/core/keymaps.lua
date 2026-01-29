@@ -182,7 +182,26 @@ keymap.set("n", "<leader>dl", function() require('dap').run_last() end, { desc =
 keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc = "Debug: Toggle UI" })
 
 -- ============================================================================
--- 18. BASE DE DATOS (nvim-dbee)
+-- 18. ZOOM DUAL (Kitty + Neovim)
+-- ============================================================================
+local zoom = require('core.zoom')
+
+-- Zoom de fuente (Terminal-Side via Kitty)
+keymap.set('n', '<leader>z+', zoom.zoom_in, { desc = "Zoom: Aumentar fuente" })
+keymap.set('n', '<leader>z-', zoom.zoom_out, { desc = "Zoom: Disminuir fuente" })
+keymap.set('n', '<leader>z=', zoom.zoom_in, { desc = "Zoom: Aumentar fuente" })
+keymap.set('n', '<leader>z0', zoom.reset_font_size, { desc = "Zoom: Resetear fuente" })
+
+-- Zoom de ventana (Neovim-Side)
+keymap.set('n', '<C-w>m', zoom.toggle_maximize, { desc = "Zoom: Maximizar/Restaurar ventana" })
+keymap.set('n', '<C-w>M', zoom.restore, { desc = "Zoom: Restaurar ventana" })
+
+-- Modo Focus (Combinado)
+keymap.set('n', '<leader>zf', zoom.focus_mode, { desc = "Zoom: Activar modo focus" })
+keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar modo focus" })
+
+-- ============================================================================
+-- 19. BASE DE DATOS (nvim-dbee)
 -- ============================================================================
 -- <leader>D   → Abrir/Cerrar nvim-dbee (Shift+D para evitar conflicto con debugger)
 -- <leader>dq  → Ejecutar query
@@ -209,6 +228,7 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 -- <leader>t*  → Testing (Java)
 -- <leader>d*  → Debugger (DAP)
 -- <leader>D   → Database (nvim-dbee)
+-- <leader>z*  → Zoom y Focus mode
 -- <leader>ca  → Code actions (LSP)
 -- <leader>rn  → Rename (LSP)
 -- <leader>r*  → Run queries (nvim-dbee)
@@ -216,4 +236,7 @@ keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc =
 -- <M-s/S>     → Spring Boot run/stop
 -- <M-l/o>     → Navegar entre buffers
 -- <F5-F12>    → Debugger controls
+-- <leader>z+/- → Zoom de fuente (Kitty)
+-- <C-w>m/M     → Maximizar/Restaurar ventana
+-- Ctrl+Shift+= / Ctrl+Shift+- → Zoom nativo de Kitty (fuera de Neovim)
 -- gd/gD/gi/gr → LSP navigation
