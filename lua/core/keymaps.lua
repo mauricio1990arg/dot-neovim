@@ -145,8 +145,11 @@ end, { desc = "Scroll up 1/4 de página y centrar" })
 -- ============================================================================
 -- 9. TERMINAL (ToggleTerm)
 -- ============================================================================
--- Leader + t para abrir/cerrar terminal
-keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>', { desc = "Toggle terminal" })
+-- Leader + t para abrir/cerrar terminal horizontal (ID 1)
+keymap.set('n', '<leader>t', '<cmd>1ToggleTerm direction=horizontal<cr>', { desc = "Toggle terminal horizontal" })
+
+-- Leader + T para abrir/cerrar terminal flotante (ID 2)
+keymap.set('n', '<leader>T', '<cmd>2ToggleTerm direction=float<cr>', { desc = "Toggle terminal flotante" })
 
 -- En modo terminal:
 keymap.set('t', '<esc>', [[<C-\><C-n>]], { desc = "Salir del modo insert en terminal" })
