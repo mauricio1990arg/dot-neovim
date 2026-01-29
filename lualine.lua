@@ -5,9 +5,9 @@ return {
     config = function()
       require("lualine").setup({
         options = {
-          theme = "tokyonight", -- Se sincroniza automáticamente
+          theme = "rose-pine", -- Sincronizado con theme.lua
           component_separators = "|",
-          section_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
         },
       })
     end,
