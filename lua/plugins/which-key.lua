@@ -9,6 +9,7 @@ return {
                 { "<leader>f", group = "Archivos" },
                 { "<leader>s", group = "Arranque de Apps" },
                 { "<leader>r", group = "Refactoring/LSP" },
+                { "<leader>a", group = "OpenCode" },
             },
             win = {
                 border = "rounded",

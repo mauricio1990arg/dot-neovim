@@ -1,11 +1,22 @@
 return {
   {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    branch = 'master',
+    dependencies = { 
+      'nvim-lua/plenary.nvim',
+    },
     config = function()
-      require('telescope').setup({})
-      -- Atajos de teclado centralizados en lua/core/keymaps.lua
+      require('telescope').setup({
+        defaults = {
+          -- Configuración mínima y segura
+          layout_strategy = 'horizontal',
+          layout_config = {
+            horizontal = {
+              preview_width = 0.55,
+            },
+          },
+        },
+      })
     end
   }
 }

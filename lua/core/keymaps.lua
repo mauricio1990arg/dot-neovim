@@ -158,14 +158,43 @@ keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], { desc = "Terminal: ir a ventana
 keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], { desc = "Terminal: ir a ventana arriba" })
 keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], { desc = "Terminal: ir a ventana derecha" })
 
--- Leader + a para toggle del panel de opencode (abrir/cerrar)
-keymap.set('n', '<leader>a', function()
+-- ============================================================================
+-- GIT (Leader + g)
+-- ============================================================================
+-- Leader + g + g → Abrir/cerrar LazyGit (toggle)
+-- Dentro de LazyGit: q para salir, o <leader>gg para cerrar la ventana
+keymap.set('n', '<leader>gg', function()
+    require("core.lazygit-toggle").toggle()
+end, { desc = "Abrir/cerrar LazyGit" })
+
+-- ============================================================================
+-- OPENCODE MENU (Leader + a)
+-- ============================================================================
+-- Leader + a + a → Abrir/cerrar panel de opencode
+keymap.set('n', '<leader>aa', function()
     require("core.opencode-panel").toggle()
-end, { desc = "Toggle panel de opencode (abrir/cerrar)" })
+end, { desc = "Abrir/cerrar OpenCode" })
+
+-- Leader + a + c → Consultar sobre lo seleccionado
+keymap.set('v', '<leader>ac', function()
+    require("core.opencode-panel").ask_about_selection()
+end, { desc = "Consultar sobre selección" })
+
+-- Leader + a + s → Consultar sobre el buffer activo
+keymap.set('n', '<leader>as', function()
+    require("core.opencode-panel").ask_about_buffer()
+end, { desc = "Consultar sobre buffer activo" })
 
 -- ============================================================================
 -- 10. TELESCOPE (Búsqueda de Archivos y Texto)
 -- ============================================================================
+-- Buscador rápido de archivos (space + space)
+keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<cr>', { desc = "Buscar archivos (rápido)" })
+
+-- Buscador de palabras entre todos los archivos (space + b)
+keymap.set('n', '<leader>b', '<cmd>Telescope live_grep<cr>', { desc = "Buscar palabras en archivos" })
+
+-- Atajos adicionales de Telescope
 keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = "Buscar archivos" })
 keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = "Buscar texto (grep)" })
 keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = "Ver buffers abiertos" })
@@ -291,8 +320,15 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>rs  → Ejecutar selección (modo visual)
 
 -- ============================================================================
--- RESUMEN DE PREFIJOS
+-- RESUMEN DE PREFIJOS Y ATAJOS RÁPIDOS
 -- ============================================================================
+-- ATAJOS RÁPIDOS:
+-- <leader><leader> → Buscar archivos (Telescope)
+-- <leader>b        → Buscar palabras en archivos (Telescope grep)
+--
+-- PREFIJOS:
+-- <leader>g*  → Git (gg: abrir/cerrar lazygit)
+-- <leader>a*  → OpenCode (aa: abrir/cerrar, ac: consultar selección, as: consultar buffer)
 -- <leader>f*  → Telescope (búsqueda de archivos y texto)
 -- <leader>x*  → Trouble (errores y diagnósticos)
 -- <leader>j*  → Java refactoring
