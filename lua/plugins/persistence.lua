@@ -29,6 +29,41 @@ return {
       end,
       nested = true, -- Permitir que otros autocmds se ejecuten después
     })
+    
+    -- Cerrar opencode, terminales y base de datos antes de guardar la sesión
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      group = vim.api.nvim_create_augroup("persistence_cleanup", { clear = true }),
+      callback = function()
+        -- 1. Cerrar OpenCode si está abierto
+        local ok, opencode = pcall(require, "core.opencode-panel")
+        if ok then
+          -- Obtener los buffers de tipo 'opencode'
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_valid(buf) then
+              local buf_ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+              if buf_ft == 'opencode' then
+                pcall(vim.api.nvim_buf_delete, buf, { force = true })
+              end
+            end
+          end
+        end
+        
+        -- 2. Cerrar todos los terminales de toggleterm
+        local ok_term, toggleterm = pcall(require, "toggleterm.terminal")
+        if ok_term then
+          local terminals = toggleterm.get_all()
+          for _, term in ipairs(terminals) do
+            term:shutdown()
+          end
+        end
+        
+        -- 3. Cerrar nvim-dbee si está abierto
+        local ok_dbee, dbee = pcall(require, "dbee")
+        if ok_dbee then
+          pcall(dbee.close)
+        end
+      end,
+    })
   end,
   keys = {
     -- <leader>ps → Restaurar sesión del directorio actual

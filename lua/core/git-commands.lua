@@ -220,6 +220,43 @@ function M.status()
         { noremap = true, silent = true })
 end
 
+-- Git Commit and Push - Add, commit y push en una operación
+function M.commit_and_push()
+    vim.ui.input({
+        prompt = "Mensaje del commit: ",
+    }, function(message)
+        if not message or message == "" then
+            vim.notify("Operación cancelada - sin mensaje", vim.log.levels.WARN)
+            return
+        end
+        
+        -- 1. Git add .
+        vim.notify("Agregando archivos...", vim.log.levels.INFO)
+        local add_success = run_git_command("git add .", "✓ Archivos agregados")
+        
+        if not add_success then
+            return
+        end
+        
+        -- 2. Git commit
+        vim.notify("Realizando commit...", vim.log.levels.INFO)
+        local commit_cmd = "git commit -m " .. vim.fn.shellescape(message)
+        local commit_success = run_git_command(commit_cmd, "✓ Commit realizado: " .. message)
+        
+        if not commit_success then
+            return
+        end
+        
+        -- 3. Git push
+        vim.notify("Enviando cambios al remoto...", vim.log.levels.INFO)
+        local push_success = run_git_command("git push", "✓ Push completado exitosamente")
+        
+        if push_success then
+            vim.notify("✓ Operación completa: add + commit + push", vim.log.levels.INFO)
+        end
+    end)
+end
+
 -- Git Restore - Deshacer cambios de archivos
 function M.restore()
     -- Obtener lista de archivos modificados

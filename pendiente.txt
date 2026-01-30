@@ -1,3 +1,0 @@
-Ahora quiero corregir algo que me molesta cuando cierro la sesino y la vuelvo a abrir, quiero que opencode siempre se cierre antes de cerrar neovim para que no quede en la proxima sesion y lo mismo si hay algun terminal abierto. La base de datos tambien. Solo pueden quedar abiertos archivos, el arbol de metodos de java y el de carpetas. Fuera de eso todo el resto se tiene que cerrar y no aparecer el la sesion que abro despues
-Crear un atajo para que me muestre un archivo flotante con los keymaps para que pueda verlos cuando necesito y recordar para que sirve cada atajo. Es
-por si las dudas.

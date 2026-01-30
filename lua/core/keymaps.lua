@@ -108,22 +108,23 @@ keymap.set("v", "j", "^", { desc = "Ir al inicio de la línea (visual)" })
 keymap.set("v", "{", "$", { desc = "Ir al final de la línea (visual)" })
 
 -- ============================================================================
--- 7. SELECCIÓN VISUAL
+-- 7. SELECCIÓN VISUAL (Sistema con 's' como prefijo)
 -- ============================================================================
+-- s → Entrar al modo visual (carácter por carácter)
+-- sw → Seleccionar palabra
+-- sl → Seleccionar línea completa
+-- se → Seleccionar desde cursor hasta el final de línea
+-- ss → Seleccionar desde cursor hasta el inicio de línea
+
+keymap.set("n", "s", "v", { desc = "Entrar al modo visual" })
+keymap.set("n", "sw", "viw", { desc = "Seleccionar palabra" })
+keymap.set("n", "sl", "V", { desc = "Seleccionar línea completa" })
+keymap.set("n", "se", "v$", { desc = "Seleccionar hasta el final de línea" })
+keymap.set("n", "ss", "v^", { desc = "Seleccionar hasta el inicio de línea" })
+
+-- Mantener compatibilidad con atajos anteriores
 keymap.set("n", "K", "v^", { desc = "Seleccionar hasta el inicio de línea" })
 keymap.set("n", "Ñ", "v$", { desc = "Seleccionar hasta el final de línea" })
-
--- Ctrl+s para entrar al modo visual
-keymap.set("n", "<C-s>", "v", { desc = "Entrar al modo visual" })
-
--- En modo visual, Ctrl+s selecciona la palabra completa (sin importar posición)
-keymap.set("v", "<C-s>", function()
-    -- Si ya estamos en modo visual, seleccionar palabra completa
-    -- Primero ir al inicio de la palabra
-    vim.cmd("normal! bw")
-    -- Luego seleccionar la palabra completa
-    vim.cmd("normal! aw")
-end, { desc = "Seleccionar palabra completa" })
 
 -- Ctrl+d para seleccionar la palabra donde está el cursor (viw)
 keymap.set("n", "<C-d>", "viw", { desc = "Seleccionar palabra completa bajo cursor" })
@@ -205,6 +206,11 @@ end, { desc = "Git: Status" })
 keymap.set('n', '<leader>gr', function()
     require("core.git-commands").restore()
 end, { desc = "Git: Restore (deshacer cambios)" })
+
+-- Leader + g + C → Git Commit and Push (add . + commit + push)
+keymap.set('n', '<leader>gC', function()
+    require("core.git-commands").commit_and_push()
+end, { desc = "Git: Add + Commit + Push" })
 
 -- ============================================================================
 -- OPENCODE MENU (Leader + a)
@@ -382,14 +388,23 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>rs  → Ejecutar selección (modo visual)
 
 -- ============================================================================
+-- 21. AYUDA DE KEYMAPS
+-- ============================================================================
+-- <leader>? → Mostrar ventana flotante con todos los atajos
+keymap.set('n', '<leader>?', function()
+    require('core.keymaps-help').show()
+end, { desc = "Mostrar guía de atajos de teclado" })
+
+-- ============================================================================
 -- RESUMEN DE PREFIJOS Y ATAJOS RÁPIDOS
 -- ============================================================================
 -- ATAJOS RÁPIDOS:
 -- <leader><leader> → Buscar archivos (Telescope)
 -- <leader>b        → Buscar palabras en archivos (Telescope grep)
+-- <leader>?        → Mostrar ayuda de atajos de teclado
 --
 -- PREFIJOS:
--- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status, gr: restore)
+-- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gC: add+commit+push, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status, gr: restore)
 -- <leader>a*  → OpenCode (aa: abrir/cerrar, ac: consultar selección, as: consultar buffer)
 -- <leader>f*  → Telescope (búsqueda de archivos y texto)
 -- <leader>x*  → Trouble (errores y diagnósticos)
