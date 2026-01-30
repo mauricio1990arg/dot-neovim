@@ -162,10 +162,44 @@ keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], { desc = "Terminal: ir a ventana
 -- GIT (Leader + g)
 -- ============================================================================
 -- Leader + g + g → Abrir/cerrar LazyGit (toggle)
--- Dentro de LazyGit: q para salir, o <leader>gg para cerrar la ventana
 keymap.set('n', '<leader>gg', function()
     require("core.lazygit-toggle").toggle()
-end, { desc = "Abrir/cerrar LazyGit" })
+end, { desc = "Git: LazyGit toggle" })
+
+-- Leader + g + a → Git Add (agregar archivos al staging)
+keymap.set('n', '<leader>ga', function()
+    require("core.git-commands").add()
+end, { desc = "Git: Add archivos" })
+
+-- Leader + g + c → Git Commit (hacer commit)
+keymap.set('n', '<leader>gc', function()
+    require("core.git-commands").commit()
+end, { desc = "Git: Commit" })
+
+-- Leader + g + p → Git Pull (traer cambios)
+keymap.set('n', '<leader>gp', function()
+    require("core.git-commands").pull()
+end, { desc = "Git: Pull" })
+
+-- Leader + g + P → Git Push (enviar cambios)
+keymap.set('n', '<leader>gP', function()
+    require("core.git-commands").push()
+end, { desc = "Git: Push" })
+
+-- Leader + g + b → Git New Branch (crear rama nueva + checkout)
+keymap.set('n', '<leader>gb', function()
+    require("core.git-commands").new_branch()
+end, { desc = "Git: Nueva rama" })
+
+-- Leader + g + o → Git Checkout (cambiar de rama)
+keymap.set('n', '<leader>go', function()
+    require("core.git-commands").checkout()
+end, { desc = "Git: Checkout rama" })
+
+-- Leader + g + s → Git Status (ver estado)
+keymap.set('n', '<leader>gs', function()
+    require("core.git-commands").status()
+end, { desc = "Git: Status" })
 
 -- ============================================================================
 -- OPENCODE MENU (Leader + a)
@@ -327,7 +361,7 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>b        → Buscar palabras en archivos (Telescope grep)
 --
 -- PREFIJOS:
--- <leader>g*  → Git (gg: abrir/cerrar lazygit)
+-- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status)
 -- <leader>a*  → OpenCode (aa: abrir/cerrar, ac: consultar selección, as: consultar buffer)
 -- <leader>f*  → Telescope (búsqueda de archivos y texto)
 -- <leader>x*  → Trouble (errores y diagnósticos)

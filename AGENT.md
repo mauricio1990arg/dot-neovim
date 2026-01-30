@@ -121,10 +121,19 @@ Tienes acceso a varios MCPs (Model Context Protocol) que debes usar:
 ### Git
 - **lazygit.nvim**: Interfaz TUI de lazygit integrada
   - **Toggle personalizado**: `lua/core/lazygit-toggle.lua`
-  - **Keybinding**: `<leader>gg` (Space+G+G) - Abre/cierra como toggle
+  - **Keybinding**: `<leader>gg` - Abre/cierra como toggle
   - **Cómo cerrar**: Presiona `<leader>gg` nuevamente o `q` dentro de lazygit
   - **Comandos**: `:LazyGit`, `:LazyGitCurrentFile`, `:LazyGitConfig`
   - **Requiere**: `lazygit` instalado en el sistema
+
+- **git-commands**: Comandos Git interactivos (`lua/core/git-commands.lua`)
+  - `<leader>ga` - Add archivos (selector interactivo)
+  - `<leader>gc` - Commit con mensaje
+  - `<leader>gp` - Pull (minúscula)
+  - `<leader>gP` - Push (mayúscula)
+  - `<leader>gb` - Nueva rama + checkout
+  - `<leader>go` - Checkout a otra rama (selector interactivo)
+  - `<leader>gs` - Status en ventana flotante
 
 ---
 

@@ -11,7 +11,8 @@ return {
       require('nvim-treesitter').install({ 
         'lua', 'vim', 'vimdoc', 'query',
         'javascript', 'typescript', 'python', 'java',
-        'html', 'css', 'json', 'yaml', 'bash'
+        'html', 'css', 'json', 'yaml', 'bash',
+        'markdown', 'markdown_inline'  -- Para render-markdown.nvim
       })
     end
   }
