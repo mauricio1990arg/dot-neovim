@@ -201,6 +201,11 @@ keymap.set('n', '<leader>gs', function()
     require("core.git-commands").status()
 end, { desc = "Git: Status" })
 
+-- Leader + g + r → Git Restore (deshacer cambios de archivo)
+keymap.set('n', '<leader>gr', function()
+    require("core.git-commands").restore()
+end, { desc = "Git: Restore (deshacer cambios)" })
+
 -- ============================================================================
 -- OPENCODE MENU (Leader + a)
 -- ============================================================================
@@ -361,7 +366,7 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>b        → Buscar palabras en archivos (Telescope grep)
 --
 -- PREFIJOS:
--- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status)
+-- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status, gr: restore)
 -- <leader>a*  → OpenCode (aa: abrir/cerrar, ac: consultar selección, as: consultar buffer)
 -- <leader>f*  → Telescope (búsqueda de archivos y texto)
 -- <leader>x*  → Trouble (errores y diagnósticos)

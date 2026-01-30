@@ -134,6 +134,7 @@ Tienes acceso a varios MCPs (Model Context Protocol) que debes usar:
   - `<leader>gb` - Nueva rama + checkout
   - `<leader>go` - Checkout a otra rama (selector interactivo)
   - `<leader>gs` - Status en ventana flotante
+  - `<leader>gr` - Restore (deshacer cambios de archivo con confirmación)
 
 ---
 
@@ -296,5 +297,4 @@ lazygit --version
 
 - Este es un entorno de desarrollo en **constante actualización**
 - Prioriza **estabilidad** sobre features experimentales
-- Siempre **documenta** los cambios que hagas
 - Si algo no funciona, **consulta primero** antes de cambiar

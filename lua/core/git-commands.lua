@@ -220,4 +220,99 @@ function M.status()
         { noremap = true, silent = true })
 end
 
+-- Git Restore - Deshacer cambios de archivos
+function M.restore()
+    -- Obtener lista de archivos modificados
+    local files = vim.fn.systemlist("git status --porcelain")
+    
+    if #files == 0 then
+        vim.notify("No hay archivos modificados para revertir", vim.log.levels.WARN)
+        return
+    end
+    
+    -- Filtrar solo archivos modificados (no nuevos)
+    local modified_files = {}
+    for _, file in ipairs(files) do
+        local status = file:sub(1, 2)
+        local filename = file:match("%s+(.+)$")
+        
+        -- M = modified, MM = modified in both index and working tree
+        -- D = deleted, etc.
+        if filename and (status:match("M") or status:match("D") or status:match("A")) then
+            table.insert(modified_files, {
+                name = filename,
+                status = status
+            })
+        end
+    end
+    
+    if #modified_files == 0 then
+        vim.notify("No hay archivos modificados para revertir", vim.log.levels.WARN)
+        return
+    end
+    
+    -- Crear opciones para el selector
+    local options = {}
+    for _, file in ipairs(modified_files) do
+        table.insert(options, file.name)
+    end
+    
+    vim.ui.select(options, {
+        prompt = "⚠️  Selecciona archivo para REVERTIR cambios (se perderán los cambios):",
+        format_item = function(item)
+            -- Encontrar el status del archivo
+            local status = ""
+            for _, file in ipairs(modified_files) do
+                if file.name == item then
+                    status = file.status
+                    break
+                end
+            end
+            
+            -- Formato con indicador de estado
+            local indicator = ""
+            if status:match("M") then
+                indicator = "● "  -- Modificado
+            elseif status:match("D") then
+                indicator = "✗ "  -- Eliminado
+            elseif status:match("A") then
+                indicator = "✚ "  -- Agregado
+            end
+            
+            return indicator .. item
+        end
+    }, function(choice)
+        if not choice then return end
+        
+        -- Confirmar antes de revertir
+        vim.ui.input({
+            prompt = "⚠️  ¿Estás seguro de revertir '" .. choice .. "'? (escribe 'si' para confirmar): ",
+        }, function(confirm)
+            if not confirm or confirm:lower() ~= "si" then
+                vim.notify("Operación cancelada", vim.log.levels.INFO)
+                return
+            end
+            
+            -- Ejecutar git restore
+            local cmd = "git restore " .. vim.fn.shellescape(choice)
+            local success = run_git_command(cmd, "✓ Cambios revertidos en: " .. choice)
+            
+            if success then
+                -- Refrescar el buffer si está abierto
+                vim.cmd("checktime")
+                
+                -- Si el archivo está abierto, recargar
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    local buf_name = vim.api.nvim_buf_get_name(buf)
+                    if buf_name:match(choice .. "$") then
+                        vim.api.nvim_buf_call(buf, function()
+                            vim.cmd("edit!")
+                        end)
+                    end
+                end
+            end
+        end)
+    end)
+end
+
 return M
