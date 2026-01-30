@@ -1,3 +1,5 @@
+-- Configuración LSP minimalista para administración de servidor Bare Metal
+-- Solo incluye LSPs esenciales: YAML, JSON, Bash (sin Docker)
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -20,84 +22,59 @@ return {
             -- Atajos de teclado LSP centralizados en lua/core/keymaps.lua
         end
 
-        -- Usar vim.lsp.config en lugar de lspconfig (nueva API de nvim 0.11+)
-        vim.lsp.config('ts_ls', {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                typescript = {
-                    inlayHints = {
-                        includeInlayParameterNameHints = 'all',
-                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                    suggest = {
-                        includeCompletionsForModuleExports = true,
-                        includeAutomaticOptionalChainCompletions = true,
-                    },
-                    preferences = {
-                        importModuleSpecifier = 'relative',
-                        includePackageJsonAutoImports = 'on',
-                    },
-                },
-                javascript = {
-                    inlayHints = {
-                        includeInlayParameterNameHints = 'all',
-                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                    suggest = {
-                        includeCompletionsForModuleExports = true,
-                        includeAutomaticOptionalChainCompletions = true,
-                    },
-                },
-            },
-        })
-
-        vim.lsp.config('eslint', {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                format = true,
-                validate = 'on',
-                run = 'onType',
-            },
-        })
-
-        vim.lsp.config('lua_ls', {
-            on_attach = on_attach,
-            capabilities = capabilities,
-        })
-
+        -- Configuración LSP solo para archivos de configuración del servidor
+        
+        -- JSON (para archivos de configuración)
         vim.lsp.config('jsonls', {
             on_attach = on_attach,
             capabilities = capabilities,
+            settings = {
+                json = {
+                    schemas = require('schemastore').json.schemas(),
+                    validate = { enable = true },
+                }
+            }
         })
 
+        -- YAML (configuraciones de servidor, k8s, etc.)
         vim.lsp.config('yamlls', {
             on_attach = on_attach,
             capabilities = capabilities,
+            settings = {
+                yaml = {
+                    schemas = {
+                        ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
+                    },
+                    validate = true,
+                    hover = true,
+                    completion = true,
+                }
+            }
         })
 
-        vim.lsp.config('lemminx', {
+        -- Bash/Shell scripts
+        vim.lsp.config('bashls', {
             on_attach = on_attach,
             capabilities = capabilities,
         })
 
-        -- Activar los servidores LSP (nueva API de nvim 0.11+)
-        vim.lsp.enable('ts_ls')
-        vim.lsp.enable('eslint')
-        vim.lsp.enable('lua_ls')
+        -- Lua (solo para configurar Neovim)
+        vim.lsp.config('lua_ls', {
+            on_attach = on_attach,
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { 'vim' }
+                    }
+                }
+            }
+        })
+
+        -- Activar solo los LSPs esenciales para servidor Bare Metal
         vim.lsp.enable('jsonls')
         vim.lsp.enable('yamlls')
-        vim.lsp.enable('lemminx')
+        vim.lsp.enable('bashls')
+        vim.lsp.enable('lua_ls')
     end,
 }

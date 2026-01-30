@@ -1,13 +1,16 @@
-require("core.nodejs").setup({ silent = true })
+-- Configuración de Neovim para administración de servidor Debian 13 (Bare Metal)
 require("core.options")
 require("core.keymaps")
 require("core.lazy")
-require("core.java-helpers")
-require("core.java-check")
-require("core.runners")
-require("config.dbee-visual").setup() -- Configuración visual para nvim-dbee
+require("core.log-config").setup() -- Configuración para visualización de logs
+require("core.filetype-config").setup() -- Configuración de tipos de archivo (.env, .service, etc.)
 vim.g.skip_ts_context_commentstring_module = true
 vim.opt.termguicolors = true
+
+-- Comando personalizado para ver logs de la aplicación
+vim.api.nvim_create_user_command("LogsApp", function()
+  require("core.systemd-commands").logs_app()
+end, { desc = "Ver logs de app-provincial.service con journalctl" })
 
 -- Activar highlighting de treesitter automáticamente para todos los archivos
 vim.api.nvim_create_autocmd('FileType', {

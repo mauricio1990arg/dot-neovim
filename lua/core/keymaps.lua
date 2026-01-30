@@ -35,7 +35,7 @@ keymap.set("n", "L", "o", { desc = "Insertar línea abajo" })
 -- ============================================================================
 -- 3. ARCHIVOS Y EDICIÓN BÁSICA
 -- ============================================================================
-keymap.set("n", "e", "<cmd>Neotree toggle<cr>", { desc = "Abrir/Cerrar explorador de archivos" })
+keymap.set("n", "e", "<cmd>Oil<cr>", { desc = "Abrir Oil (explorador de archivos)" })
 keymap.set("n", "w", ":w<CR>", { desc = "Guardar archivo" })
 keymap.set("n", "q", ":bdelete<CR>", { desc = "Cerrar buffer actual" })
 keymap.set("n", "z", "u", { desc = "Deshacer cambios" })
@@ -108,25 +108,38 @@ keymap.set("v", "j", "^", { desc = "Ir al inicio de la línea (visual)" })
 keymap.set("v", "{", "$", { desc = "Ir al final de la línea (visual)" })
 
 -- ============================================================================
--- 7. SELECCIÓN VISUAL
+-- 7. SELECCIÓN VISUAL (s*)
 -- ============================================================================
-keymap.set("n", "K", "v^", { desc = "Seleccionar hasta el inicio de línea" })
-keymap.set("n", "Ñ", "v$", { desc = "Seleccionar hasta el final de línea" })
+-- s para entrar al modo visual carácter por carácter
+keymap.set("n", "s", "v", { desc = "Entrar al modo visual (carácter)" })
 
--- Ctrl+s para entrar al modo visual
+-- sw para seleccionar palabra
+keymap.set("n", "sw", "viw", { desc = "Seleccionar palabra" })
+
+-- sl para seleccionar línea completa
+keymap.set("n", "sl", "V", { desc = "Seleccionar línea completa" })
+
+-- se para seleccionar hasta el final de línea
+keymap.set("n", "se", "v$", { desc = "Seleccionar hasta el final de línea" })
+
+-- ss para seleccionar hasta el inicio de línea
+keymap.set("n", "ss", "v^", { desc = "Seleccionar hasta el inicio de línea" })
+
+-- Atajos alternativos
+keymap.set("n", "K", "v^", { desc = "Seleccionar hasta el inicio de línea (alt)" })
+keymap.set("n", "Ñ", "v$", { desc = "Seleccionar hasta el final de línea (alt)" })
+
+-- Ctrl+d para seleccionar palabra bajo cursor (alternativa a sw)
+keymap.set("n", "<C-d>", "viw", { desc = "Seleccionar palabra completa bajo cursor" })
+
+-- Ctrl+s también entra al modo visual (alternativa a s)
 keymap.set("n", "<C-s>", "v", { desc = "Entrar al modo visual" })
 
--- En modo visual, Ctrl+s selecciona la palabra completa (sin importar posición)
+-- En modo visual, Ctrl+s selecciona la palabra completa
 keymap.set("v", "<C-s>", function()
-    -- Si ya estamos en modo visual, seleccionar palabra completa
-    -- Primero ir al inicio de la palabra
     vim.cmd("normal! bw")
-    -- Luego seleccionar la palabra completa
     vim.cmd("normal! aw")
 end, { desc = "Seleccionar palabra completa" })
-
--- Ctrl+d para seleccionar la palabra donde está el cursor (viw)
-keymap.set("n", "<C-d>", "viw", { desc = "Seleccionar palabra completa bajo cursor" })
 
 -- ============================================================================
 -- 8. SCROLL Y CENTRADO
@@ -227,124 +240,88 @@ end, { desc = "Consultar sobre buffer activo" })
 -- ============================================================================
 -- 10. TELESCOPE (Búsqueda de Archivos y Texto)
 -- ============================================================================
--- Buscador rápido de archivos (space + space)
-keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<cr>', { desc = "Buscar archivos (rápido)" })
-
--- Buscador de palabras entre todos los archivos (space + b)
-keymap.set('n', '<leader>b', '<cmd>Telescope live_grep<cr>', { desc = "Buscar palabras en archivos" })
-
--- Atajos adicionales de Telescope
-keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = "Buscar archivos" })
-keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = "Buscar texto (grep)" })
-keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = "Ver buffers abiertos" })
-keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = "Buscar en ayuda" })
-keymap.set('n', '<leader>fs', '<cmd>Telescope lsp_document_symbols<cr>', { desc = "Símbolos del documento" })
-keymap.set('n', '<leader>fw', '<cmd>Telescope lsp_workspace_symbols<cr>', { desc = "Símbolos del workspace" })
-keymap.set('n', '<leader>fr', '<cmd>Telescope lsp_references<cr>', { desc = "Referencias LSP" })
-keymap.set('n', '<leader>fi', '<cmd>Telescope lsp_implementations<cr>', { desc = "Implementaciones LSP" })
+-- Configurado en lua/plugins/telescope.lua con keymaps específicos para servidor
 
 -- ============================================================================
--- 11. TROUBLE (Lista de Errores y Diagnósticos)
+-- 11. LSP BÁSICO (Solo archivos de configuración)
 -- ============================================================================
-keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Trouble: Todos los errores" })
-keymap.set("n", "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-    { desc = "Trouble: Errores del archivo" })
-keymap.set("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Trouble: Símbolos" })
-keymap.set("n", "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-    { desc = "Trouble: Info LSP" })
-
--- ============================================================================
--- 12. LSP - NAVEGACIÓN DE CÓDIGO (Todos los lenguajes)
--- ============================================================================
-keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "LSP: Ir a definición" })
-keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = "LSP: Ir a declaración" })
-keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = "LSP: Ir a implementación" })
-keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "LSP: Ver referencias" })
-keymap.set('n', 'gt', vim.lsp.buf.type_definition, { desc = "LSP: Ir a definición de tipo" })
-keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "LSP: Mostrar documentación (hover)" })
-
--- ============================================================================
--- 13. LSP - REFACTORING Y ACCIONES
--- ============================================================================
-keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP: Renombrar símbolo" })
-keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "LSP: Acciones de código" })
-keymap.set('n', '<leader>f', function()
-    vim.lsp.buf.format({ async = true })
-end, { desc = "LSP: Formatear código" })
-
--- ============================================================================
--- 14. LSP - DIAGNÓSTICOS Y ERRORES
--- ============================================================================
+keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "LSP: Mostrar documentación" })
 keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Diagnóstico anterior" })
 keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Siguiente diagnóstico" })
 keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Mostrar diagnóstico flotante" })
-keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Lista de diagnósticos" })
-keymap.set('n', '<C-.>', vim.diagnostic.open_float, { desc = "Ver error en línea actual" })
 
 -- ============================================================================
--- 15. JAVA - REFACTORING Y TESTING (Solo en archivos .java)
+-- 17. SYSTEMD (Menú <leader>s)
 -- ============================================================================
--- Estos atajos se activan automáticamente en archivos Java vía ftplugin/java.lua
--- <leader>jo → Organizar imports
--- <leader>jv → Extraer variable (normal y visual)
--- <leader>jc → Extraer constante (normal y visual)
--- <leader>jm → Extraer método (visual)
--- <leader>tc → Ejecutar test de clase
--- <leader>tm → Ejecutar test del método actual
+-- Leader + s + l → Ver logs de la aplicación (journalctl)
+keymap.set('n', '<leader>sl', function()
+    require("core.systemd-commands").logs_app()
+end, { desc = "Systemd: Logs de aplicación" })
+
+-- Leader + s + s → Ver estado del servicio
+keymap.set('n', '<leader>ss', function()
+    require("core.systemd-commands").status_app()
+end, { desc = "Systemd: Status del servicio" })
+
+-- Leader + s + r → Reiniciar servicio
+keymap.set('n', '<leader>sr', function()
+    require("core.systemd-commands").restart_app()
+end, { desc = "Systemd: Restart servicio" })
+
+-- Leader + s + S → Detener servicio
+keymap.set('n', '<leader>sS', function()
+    require("core.systemd-commands").stop_app()
+end, { desc = "Systemd: Stop servicio" })
+
+-- Leader + s + a → Iniciar servicio
+keymap.set('n', '<leader>sa', function()
+    require("core.systemd-commands").start_app()
+end, { desc = "Systemd: Start servicio" })
+
+-- Leader + s + d → Daemon reload (después de editar .service)
+keymap.set('n', '<leader>sd', function()
+    require("core.systemd-commands").daemon_reload()
+end, { desc = "Systemd: Daemon reload" })
+
+-- Leader + s + e → Habilitar servicio al inicio
+keymap.set('n', '<leader>se', function()
+    require("core.systemd-commands").enable_app()
+end, { desc = "Systemd: Enable servicio" })
+
+-- Leader + s + E → Deshabilitar servicio del inicio
+keymap.set('n', '<leader>sE', function()
+    require("core.systemd-commands").disable_app()
+end, { desc = "Systemd: Disable servicio" })
+
+-- Leader + s + L → Listar todos los servicios
+keymap.set('n', '<leader>sL', function()
+    require("core.systemd-commands").list_services()
+end, { desc = "Systemd: Listar servicios" })
+
+-- Leader + s + f → Listar servicios fallidos
+keymap.set('n', '<leader>sf', function()
+    require("core.systemd-commands").list_failed_services()
+end, { desc = "Systemd: Servicios fallidos" })
+
+-- Leader + s + t → Terminal systemctl
+keymap.set('n', '<leader>st', function()
+    require("core.systemd-commands").systemctl_terminal()
+end, { desc = "Systemd: Terminal systemctl" })
+
+-- Leader + s + j → Ver logs del sistema completo
+keymap.set('n', '<leader>sj', function()
+    require("core.systemd-commands").system_logs()
+end, { desc = "Systemd: Logs del sistema" })
+
+-- Leader + s + x → Ver errores del sistema
+keymap.set('n', '<leader>sx', function()
+    require("core.systemd-commands").system_errors()
+end, { desc = "Systemd: Errores del sistema" })
+
+
 
 -- ============================================================================
--- 16. ARRANQUE DE APLICACIONES (Menú <leader>s)
--- ============================================================================
--- Requiere lua/core/runners.lua
-
--- Spring Boot
-keymap.set('n', '<leader>ss', '<cmd>SpringBootRun<CR>', { desc = "Spring Boot: Ejecutar" })
-keymap.set('n', '<leader>sS', '<cmd>SpringBootStop<CR>', { desc = "Spring Boot: Detener" })
-
--- React Router 7
-keymap.set('n', '<leader>sr', '<cmd>ReactRouterRun<CR>', { desc = "React Router 7: Ejecutar" })
-keymap.set('n', '<leader>sR', '<cmd>ReactRouterStop<CR>', { desc = "React Router 7: Detener" })
-
--- ============================================================================
--- 17. DOCKER (Menú <leader>k)
--- ============================================================================
--- Leader + k + u → Docker Compose Up (levantar contenedores)
-keymap.set('n', '<leader>ku', function()
-    require("core.docker-commands").compose_up()
-end, { desc = "Docker: Levantar contenedores (up)" })
-
--- Leader + k + d → Docker Compose Down (detener contenedores)
-keymap.set('n', '<leader>kd', function()
-    require("core.docker-commands").compose_down()
-end, { desc = "Docker: Detener contenedores (down)" })
-
--- Leader + k + l → Docker Compose Logs (ver logs)
-keymap.set('n', '<leader>kl', function()
-    require("core.docker-commands").compose_logs()
-end, { desc = "Docker: Ver logs" })
-
--- Leader + k + s → Docker Compose PS (ver estado)
-keymap.set('n', '<leader>ks', function()
-    require("core.docker-commands").compose_ps()
-end, { desc = "Docker: Ver estado de contenedores" })
-
--- ============================================================================
--- 18. DEBUGGER (DAP) - Todos los lenguajes
--- ============================================================================
-keymap.set("n", "<F5>", function() require('dap').continue() end, { desc = "Debug: Iniciar/Continuar" })
-keymap.set("n", "<F10>", function() require('dap').step_over() end, { desc = "Debug: Paso sobre (Step Over)" })
-keymap.set("n", "<F11>", function() require('dap').step_into() end, { desc = "Debug: Paso dentro (Step Into)" })
-keymap.set("n", "<F12>", function() require('dap').step_out() end, { desc = "Debug: Paso fuera (Step Out)" })
-keymap.set("n", "<leader>db", function() require('dap').toggle_breakpoint() end, { desc = "Debug: Toggle breakpoint" })
-keymap.set("n", "<leader>dB", function()
-    require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end, { desc = "Debug: Breakpoint condicional" })
-keymap.set("n", "<leader>dr", function() require('dap').repl.open() end, { desc = "Debug: Abrir REPL" })
-keymap.set("n", "<leader>dl", function() require('dap').run_last() end, { desc = "Debug: Ejecutar último" })
-keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc = "Debug: Toggle UI" })
-
--- ============================================================================
--- 19. ZOOM DUAL (Kitty + Neovim)
+-- 12. ZOOM DUAL (Kitty + Neovim)
 -- ============================================================================
 local zoom = require('core.zoom')
 
@@ -363,52 +340,44 @@ keymap.set('n', '<leader>zf', zoom.focus_mode, { desc = "Zoom: Activar modo focu
 keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar modo focus" })
 
 -- ============================================================================
--- 20. BASE DE DATOS (nvim-dbee)
+-- 13. AYUDA
 -- ============================================================================
--- <leader>D   → Abrir/Cerrar nvim-dbee (Shift+D para evitar conflicto con debugger)
--- <leader>dq  → Ejecutar query
---
--- Dentro del Drawer (barra lateral):
--- o/l         → Navegar arriba/abajo (respeta tu layout)
--- k/ñ         → Navegar izquierda/derecha
--- ñ           → Expandir/colapsar nodos
--- <CR>        → Abrir/activar conexión o scratchpad
--- r           → Refrescar
--- cw          → Renombrar/editar
--- dd          → Eliminar
---
--- Dentro del Editor de Queries:
--- <leader>rr  → Ejecutar archivo completo
--- <leader>rs  → Ejecutar selección (modo visual)
+keymap.set('n', '<leader>?', function()
+  require('core.help-panel').show()
+end, { desc = "Mostrar panel de ayuda de keymaps" })
 
 -- ============================================================================
--- RESUMEN DE PREFIJOS Y ATAJOS RÁPIDOS
+-- RESUMEN DE PREFIJOS Y ATAJOS RÁPIDOS PARA SERVIDOR BARE METAL
 -- ============================================================================
 -- ATAJOS RÁPIDOS:
--- <leader><leader> → Buscar archivos (Telescope)
--- <leader>b        → Buscar palabras en archivos (Telescope grep)
+-- e                   → Toggle Oil sidebar (derecha, se cierra al abrir archivo)
+-- <leader>o           → Toggle Oil sidebar
+-- <leader>O           → Abrir Oil flotante
+-- -                   → Abrir Oil en directorio padre
+-- <leader><leader>    → 🔍 BUSCAR ARCHIVOS (doble espacio) ⭐
 --
 -- PREFIJOS:
 -- <leader>g*  → Git (gg: lazygit, ga: add, gc: commit, gp: pull, gP: push, gb: nueva rama, go: checkout, gs: status, gr: restore)
 -- <leader>a*  → OpenCode (aa: abrir/cerrar, ac: consultar selección, as: consultar buffer)
--- <leader>f*  → Telescope (búsqueda de archivos y texto)
--- <leader>x*  → Trouble (errores y diagnósticos)
--- <leader>j*  → Java refactoring
--- <leader>t*  → Testing (Java)
--- <leader>k*  → Docker (ku: up, kd: down, kl: logs, ks: status)
--- <leader>d*  → Debugger (DAP)
--- <leader>D   → Database (nvim-dbee)
+-- <leader>f*  → Telescope (fe: /etc/, fS: systemd, fl: logs, fL: /var/log/, fc: configs, ff: find, fg: grep, fb: buffers, fh: help)
+-- <leader>s*  → Systemd (sl: logs app, ss: status, sr: restart, sS: stop, sa: start, sd: daemon-reload, se: enable, sE: disable, sL: list, sf: failed, st: terminal, sj: system logs, sx: errors)
+-- <leader>l*  → Logs (lt: tail -f mode, lr: reload, le/lE: buscar errores, lw: buscar warnings)
 -- <leader>z*  → Zoom y Focus mode
--- <leader>ca  → Code actions (LSP)
--- <leader>rn  → Rename (LSP)
--- <leader>r*  → Run queries (nvim-dbee)
--- <leader>1-9   → Saltar a buffer específico
--- <M-s/S>       → Spring Boot run/stop
--- <M-k/ñ>       → Navegar entre buffers (anterior/siguiente)
--- <M-o/l>       → Scroll up/down (desplazamiento en documento)
--- <C-k/l/o/ñ>   → Navegar entre ventanas (izq/abajo/arriba/der)
--- <F5-F12>      → Debugger controls
--- <leader>z+/-  → Zoom de fuente (Kitty)
--- <C-w>m/M      → Maximizar/Restaurar ventana
--- Ctrl+Shift+=/- → Zoom nativo de Kitty (fuera de Neovim)
--- gd/gD/gi/gr → LSP navigation
+-- <leader>t   → Terminal horizontal toggle
+-- <leader>T   → Terminal flotante toggle
+-- <leader>1-9 → Saltar a buffer específico
+-- <M-k/ñ>     → Navegar entre buffers (anterior/siguiente)
+-- <M-o/l>     → Scroll up/down
+-- <C-k/l/o/ñ> → Navegar entre ventanas
+-- K           → LSP hover (documentación)
+-- [d / ]d     → Diagnóstico anterior/siguiente
+--
+-- COMANDOS ESPECIALES:
+-- :LogsApp    → journalctl -u app-provincial.service -f -n 100
+--
+-- OIL SIDEBAR (Explorador a la derecha):
+-- <CR>        → Abrir archivo y CERRAR Oil
+-- <C-s>       → Abrir en split vertical y CERRAR Oil
+-- <C-h>       → Abrir en split horizontal y CERRAR Oil
+-- gp          → Cambiar permisos (chmod)
+-- g.          → Toggle archivos ocultos
