@@ -306,7 +306,30 @@ keymap.set('n', '<leader>sr', '<cmd>ReactRouterRun<CR>', { desc = "React Router 
 keymap.set('n', '<leader>sR', '<cmd>ReactRouterStop<CR>', { desc = "React Router 7: Detener" })
 
 -- ============================================================================
--- 17. DEBUGGER (DAP) - Todos los lenguajes
+-- 17. DOCKER (Menú <leader>k)
+-- ============================================================================
+-- Leader + k + u → Docker Compose Up (levantar contenedores)
+keymap.set('n', '<leader>ku', function()
+    require("core.docker-commands").compose_up()
+end, { desc = "Docker: Levantar contenedores (up)" })
+
+-- Leader + k + d → Docker Compose Down (detener contenedores)
+keymap.set('n', '<leader>kd', function()
+    require("core.docker-commands").compose_down()
+end, { desc = "Docker: Detener contenedores (down)" })
+
+-- Leader + k + l → Docker Compose Logs (ver logs)
+keymap.set('n', '<leader>kl', function()
+    require("core.docker-commands").compose_logs()
+end, { desc = "Docker: Ver logs" })
+
+-- Leader + k + s → Docker Compose PS (ver estado)
+keymap.set('n', '<leader>ks', function()
+    require("core.docker-commands").compose_ps()
+end, { desc = "Docker: Ver estado de contenedores" })
+
+-- ============================================================================
+-- 18. DEBUGGER (DAP) - Todos los lenguajes
 -- ============================================================================
 keymap.set("n", "<F5>", function() require('dap').continue() end, { desc = "Debug: Iniciar/Continuar" })
 keymap.set("n", "<F10>", function() require('dap').step_over() end, { desc = "Debug: Paso sobre (Step Over)" })
@@ -321,7 +344,7 @@ keymap.set("n", "<leader>dl", function() require('dap').run_last() end, { desc =
 keymap.set("n", "<leader>du", function() require('dapui').toggle() end, { desc = "Debug: Toggle UI" })
 
 -- ============================================================================
--- 18. ZOOM DUAL (Kitty + Neovim)
+-- 19. ZOOM DUAL (Kitty + Neovim)
 -- ============================================================================
 local zoom = require('core.zoom')
 
@@ -340,7 +363,7 @@ keymap.set('n', '<leader>zf', zoom.focus_mode, { desc = "Zoom: Activar modo focu
 keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar modo focus" })
 
 -- ============================================================================
--- 19. BASE DE DATOS (nvim-dbee)
+-- 20. BASE DE DATOS (nvim-dbee)
 -- ============================================================================
 -- <leader>D   → Abrir/Cerrar nvim-dbee (Shift+D para evitar conflicto con debugger)
 -- <leader>dq  → Ejecutar query
@@ -372,6 +395,7 @@ keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar m
 -- <leader>x*  → Trouble (errores y diagnósticos)
 -- <leader>j*  → Java refactoring
 -- <leader>t*  → Testing (Java)
+-- <leader>k*  → Docker (ku: up, kd: down, kl: logs, ks: status)
 -- <leader>d*  → Debugger (DAP)
 -- <leader>D   → Database (nvim-dbee)
 -- <leader>z*  → Zoom y Focus mode
