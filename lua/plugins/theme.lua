@@ -1,56 +1,42 @@
 return {
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "yorumicolors/yorumi.nvim",
         priority = 1000,
         config = function()
-            require("rose-pine").setup({
-                variant = "moon",
-                styles = {
-                    italic = true,
-                    transparency = true,
-                },
-                highlight_groups = {
-                    NotifyBackground = { bg = "#000000" },
-                    ["@annotation"] = { fg = "iris" },
-                    ["@annotation.java"] = { fg = "gold" },
+            -- Yorumi no usa una función .setup(), se activa directamente
+            vim.cmd("colorscheme yorumi")
 
-                    -- ============================================================================
-                    -- NVIM-DBEE: Colores personalizados para MongoDB y bases de datos
-                    -- ============================================================================
+            -- Intentamos obtener la paleta de forma segura
+            local ok, yorumi_palette = pcall(require, "yorumi.palette")
+            if not ok then return end
 
-                    -- Operadores MongoDB ($find, $match, $set, etc.)
-                    ["@field.mongodb"] = { fg = "#f6c177", bold = true }, -- Amarillo/dorado vibrante
-                    ["@operator.mongodb"] = { fg = "#ea9a97", bold = true }, -- Coral brillante
+            local highlights = {
+                NotifyBackground = { bg = "#000000" },
+                ["@annotation"] = { fg = yorumi_palette.magenta },
+                ["@annotation.java"] = { fg = yorumi_palette.yellow },
 
-                    -- ObjectIDs de MongoDB
-                    ["@string.special.mongodb"] = { fg = "#9ccfd8", italic = true }, -- Cian suave
+                -- NVIM-DBEE: Colores para MongoDB
+                ["@field.mongodb"] = { fg = yorumi_palette.yellow, bold = true },
+                ["@operator.mongodb"] = { fg = yorumi_palette.orange, bold = true },
+                ["@string.special.mongodb"] = { fg = yorumi_palette.cyan, italic = true },
 
-                    -- Claves de documentos JSON
-                    ["@property.json"] = { fg = "#c4a7e7" }, -- Iris/púrpura
+                -- JSON
+                ["@property.json"] = { fg = yorumi_palette.magenta },
+                ["@string.json"] = { fg = yorumi_palette.green },
+                ["@number.json"] = { fg = yorumi_palette.orange },
+                ["@boolean.json"] = { fg = yorumi_palette.red },
 
-                    -- Valores en JSON
-                    ["@string.json"] = { fg = "#f6c177" }, -- Amarillo
-                    ["@number.json"] = { fg = "#ea9a97" }, -- Coral
-                    ["@boolean.json"] = { fg = "#eb6f92" }, -- Love (rosa)
+                -- Ventanas flotantes y Dbee
+                FloatBorder = { fg = yorumi_palette.comment, bg = "none" },
+                FloatTitle = { fg = yorumi_palette.magenta, bold = true },
+                DbeeDrawerConnection = { fg = yorumi_palette.blue, bold = true },
+                DbeeDrawerActiveConnection = { fg = yorumi_palette.cyan, bold = true, italic = true },
+                DbeeResultHeader = { fg = yorumi_palette.magenta, bold = true },
+            }
 
-                    -- Bordes de ventanas flotantes (menús, selección de DB)
-                    FloatBorder = { fg = "#44415a", bg = "none" }, -- Borde visible sobre fondo
-                    FloatTitle = { fg = "#c4a7e7", bold = true }, -- Título púrpura
-
-                    -- Drawer de nvim-dbee
-                    DbeeDrawerConnection = { fg = "#31748f", bold = true },            -- Azul para conexiones
-                    DbeeDrawerActiveConnection = { fg = "#9ccfd8", bold = true, italic = true }, -- Cian brillante para activa
-                    DbeeDrawerFolder = { fg = "#6e6a86" },                             -- Gris para carpetas
-                    DbeeDrawerNote = { fg = "#908caa" },                               -- Gris más claro para notas
-
-                    -- Resultados en dbee-result
-                    DbeeResultHeader = { fg = "#c4a7e7", bold = true }, -- Encabezados púrpura
-                    DbeeResultRow = { fg = "#e0def4" },          -- Texto normal
-                    DbeeResultRowAlt = { fg = "#e0def4", bg = "#232136" }, -- Fila alternada
-                },
-            })
-            vim.cmd("colorscheme rose-pine")
+            for group, opts in pairs(highlights) do
+                vim.api.nvim_set_hl(0, group, opts)
+            end
         end,
     },
 }
