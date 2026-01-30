@@ -319,6 +319,18 @@ k = izquierda (h)
 
 **Respetar esta navegación en todos los plugins y configuraciones.**
 
+## Cambio de modos (IMPORTANTE)
+
+**Nuevos atajos para volver al modo normal:**
+
+```
+Tab en modo Insert    → Vuelve al modo normal
+Tab en modo Visual    → Vuelve al modo normal
+n en modo Terminal    → Vuelve al modo normal
+```
+
+**Razón:** Se usa Tab en lugar de Escape en Insert/Visual para evitar conflictos con OpenCode y otros plugins que usan Escape para cancelar acciones. En el terminal se usa 'n' en lugar de Escape porque también necesitamos Escape libre para otros usos dentro del terminal.
+
 ---
 
 ## Infraestructura del servidor

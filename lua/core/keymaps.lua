@@ -156,7 +156,15 @@ keymap.set("n", "<M-o>", function()
 end, { desc = "Scroll up 1/4 de página y centrar" })
 
 -- ============================================================================
--- 9. TERMINAL (ToggleTerm)
+-- 9. MODOS (Volver a modo normal)
+-- ============================================================================
+-- Tab para volver al modo normal desde Insert y Visual
+-- IMPORTANTE: Se usa Tab en lugar de Escape para evitar conflictos con OpenCode y otros plugins
+keymap.set('i', '<Tab>', '<Esc>', { desc = "Salir al modo normal desde Insert" })
+keymap.set('v', '<Tab>', '<Esc>', { desc = "Salir al modo normal desde Visual" })
+
+-- ============================================================================
+-- 10. TERMINAL (ToggleTerm)
 -- ============================================================================
 -- Leader + t para abrir/cerrar terminal horizontal (ID 1)
 keymap.set('n', '<leader>t', '<cmd>1ToggleTerm direction=horizontal<cr>', { desc = "Toggle terminal horizontal" })
@@ -165,7 +173,8 @@ keymap.set('n', '<leader>t', '<cmd>1ToggleTerm direction=horizontal<cr>', { desc
 keymap.set('n', '<leader>T', '<cmd>2ToggleTerm direction=float<cr>', { desc = "Toggle terminal flotante" })
 
 -- En modo terminal:
-keymap.set('t', '<esc>', [[<C-\><C-n>]], { desc = "Salir del modo insert en terminal" })
+-- IMPORTANTE: Se usa 'n' en lugar de Escape porque necesitamos Escape libre en el terminal
+keymap.set('t', '<C-n>', [[<C-\><C-n>]], { desc = "Salir del modo insert en terminal" })
 keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], { desc = "Terminal: ir a ventana izquierda" })
 keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], { desc = "Terminal: ir a ventana abajo" })
 keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], { desc = "Terminal: ir a ventana arriba" })
@@ -238,12 +247,12 @@ keymap.set('n', '<leader>as', function()
 end, { desc = "Consultar sobre buffer activo" })
 
 -- ============================================================================
--- 10. TELESCOPE (Búsqueda de Archivos y Texto)
+-- 11. TELESCOPE (Búsqueda de Archivos y Texto)
 -- ============================================================================
 -- Configurado en lua/plugins/telescope.lua con keymaps específicos para servidor
 
 -- ============================================================================
--- 11. LSP BÁSICO (Solo archivos de configuración)
+-- 12. LSP BÁSICO (Solo archivos de configuración)
 -- ============================================================================
 keymap.set('n', 'K', vim.lsp.buf.hover, { desc = "LSP: Mostrar documentación" })
 keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Diagnóstico anterior" })
@@ -251,7 +260,7 @@ keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Siguiente diagnóstico
 keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Mostrar diagnóstico flotante" })
 
 -- ============================================================================
--- 17. SYSTEMD (Menú <leader>s)
+-- 13. SYSTEMD (Menú <leader>s)
 -- ============================================================================
 -- Leader + s + l → Ver logs de la aplicación (journalctl)
 keymap.set('n', '<leader>sl', function()
@@ -321,7 +330,7 @@ end, { desc = "Systemd: Errores del sistema" })
 
 
 -- ============================================================================
--- 12. ZOOM DUAL (Kitty + Neovim)
+-- 14. ZOOM DUAL (Kitty + Neovim)
 -- ============================================================================
 local zoom = require('core.zoom')
 
@@ -340,7 +349,7 @@ keymap.set('n', '<leader>zf', zoom.focus_mode, { desc = "Zoom: Activar modo focu
 keymap.set('n', '<leader>zF', zoom.exit_focus_mode, { desc = "Zoom: Desactivar modo focus" })
 
 -- ============================================================================
--- 13. AYUDA
+-- 15. AYUDA
 -- ============================================================================
 keymap.set('n', '<leader>?', function()
   require('core.help-panel').show()
